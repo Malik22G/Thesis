@@ -1,24 +1,40 @@
 import torch
 import torch.nn.functional as F
+import numpy as np
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
+# Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# Load tokenizer and model
 model_path = "./deberta_finetuned"
 tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
 model = AutoModelForSequenceClassification.from_pretrained(model_path, local_files_only=True).to(device)
 model.eval()
 
+# Label mapping
 id2label = {0: "positive", 1: "negative", 2: "neutral"}
 
+# Clean input text
 def clean_text(t: str) -> str:
     return t.strip()[:512]
 
+# Convert numpy values to native Python types
+def convert_numpy(obj):
+    if isinstance(obj, np.generic):
+        return obj.item()
+    elif isinstance(obj, dict):
+        return {k: convert_numpy(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_numpy(i) for i in obj]
+    return obj
+
+# Predict sentiment
 def predict_sentiment(texts: list[str], batch_size: int = 32):
-    print("✅ Running predict_sentiment on:", len(texts), "texts")
+    print("Running predict_sentiment on:", len(texts), "texts")
 
     cleaned_texts = [clean_text(t) for t in texts if isinstance(t, str) and t.strip()]
-    
+
     if not cleaned_texts:
         return {
             "summary": {"positive": 0.0, "negative": 0.0, "neutral": 0.0, "overall": "neutral"},
@@ -53,9 +69,9 @@ def predict_sentiment(texts: list[str], batch_size: int = 32):
                 }
             }
             results.append(result)
-            total_probs["positive"] += p[0]
-            total_probs["negative"] += p[1]
-            total_probs["neutral"] += p[2]
+            total_probs["positive"] += float(p[0])
+            total_probs["negative"] += float(p[1])
+            total_probs["neutral"] += float(p[2])
 
     n = len(results)
     avg_probs = {
@@ -65,7 +81,7 @@ def predict_sentiment(texts: list[str], batch_size: int = 32):
     }
     overall_label = max(avg_probs, key=avg_probs.get)
 
-    return {
+    response = {
         "summary": {
             "positive": avg_probs["positive"],
             "negative": avg_probs["negative"],
@@ -73,5 +89,7 @@ def predict_sentiment(texts: list[str], batch_size: int = 32):
             "overall": overall_label
         },
         "comments": results,
-        "aspects": []  
+        "aspects": []
     }
+
+    return convert_numpy(response)

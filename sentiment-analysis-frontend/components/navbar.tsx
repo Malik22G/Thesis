@@ -36,13 +36,13 @@ export function Navbar() {
               Analyze
             </Link>
             <Link
-              href="#"
+              href="/documentation"
               className="text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
             >
               Documentation
             </Link>
             <Link
-              href="#"
+              href="/pricing"
               className="text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
             >
               Pricing

@@ -42,28 +42,13 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/pricing"
                   className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                 >
                   Pricing
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  API
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  Integrations
-                </Link>
-              </li>
+          
             </ul>
           </div>
 
@@ -72,7 +57,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#"
+                  href="/documentation"
                   className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                 >
                   Documentation
@@ -86,22 +71,7 @@ export function Footer() {
                   Guides
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  Support
-                </Link>
-              </li>
+          
             </ul>
           </div>
 
@@ -110,7 +80,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#"
+                  href="/about"
                   className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                 >
                   About
@@ -118,35 +88,20 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/careers"
                   className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                 >
                   Careers
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  Terms
-                </Link>
-              </li>
+    
             </ul>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
           <p className="text-center text-slate-600 dark:text-slate-400">
-            © {new Date().getFullYear()} SentiScan. All rights reserved.
+            © {new Date().getFullYear()} SentiMeter. All rights reserved.
           </p>
         </div>
       </div>

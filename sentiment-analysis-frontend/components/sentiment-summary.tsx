@@ -1,6 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+"use client"
+
+import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { ThumbsUp, ThumbsDown, Minus } from "lucide-react"
+import { motion } from "framer-motion"
 
 type SentimentScore = {
   positive: number
@@ -21,107 +23,136 @@ type AnalysisResult = {
 }
 
 interface SentimentSummaryProps {
-  result: AnalysisResult
+  result: AnalysisResult | null
 }
 
 export function SentimentSummary({ result }: SentimentSummaryProps) {
-  const getSentimentIcon = (sentiment: "positive" | "negative" | "neutral") => {
+  // If no result yet, show placeholder
+  if (!result) {
+    return (
+      <Card className="border-slate-200 dark:border-slate-800">
+        <CardContent className="p-6">
+          <div className="text-center py-8">
+            <p className="text-slate-500 dark:text-slate-400">Submit text to see sentiment analysis results</p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const { overallSentiment } = result
+
+  const getSentimentColor = (sentiment: "positive" | "negative" | "neutral") => {
     switch (sentiment) {
       case "positive":
-        return <ThumbsUp className="h-5 w-5 text-green-500" />
+        return "text-green-600 dark:text-green-400"
       case "negative":
-        return <ThumbsDown className="h-5 w-5 text-red-500" />
+        return "text-red-600 dark:text-red-400"
       case "neutral":
-        return <Minus className="h-5 w-5 text-yellow-500" />
+        return "text-amber-600 dark:text-amber-400"
+      default:
+        return "text-slate-600 dark:text-slate-400"
     }
   }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            Overall Sentiment
-            {getSentimentIcon(result.overallSentiment.overall)}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm font-medium text-green-600 dark:text-green-400">Positive</span>
-                <span className="text-sm font-medium">{Math.round(result.overallSentiment.positive * 100)}%</span>
-              </div>
-              <Progress
-                value={result.overallSentiment.positive * 100}
-                className="h-2 bg-slate-200 dark:bg-slate-700"
-                indicatorClassName="bg-green-500"
-              />
-            </div>
-            <div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm font-medium text-red-600 dark:text-red-400">Negative</span>
-                <span className="text-sm font-medium">{Math.round(result.overallSentiment.negative * 100)}%</span>
-              </div>
-              <Progress
-                value={result.overallSentiment.negative * 100}
-                className="h-2 bg-slate-200 dark:bg-slate-700"
-                indicatorClassName="bg-red-500"
-              />
-            </div>
-            <div>
-              <div className="flex justify-between mb-1">
-                <span className="text-sm font-medium text-yellow-600 dark:text-yellow-400">Neutral</span>
-                <span className="text-sm font-medium">{Math.round(result.overallSentiment.neutral * 100)}%</span>
-              </div>
-              <Progress
-                value={result.overallSentiment.neutral * 100}
-                className="h-2 bg-slate-200 dark:bg-slate-700"
-                indicatorClassName="bg-yellow-500"
-              />
+    <Card className="border-slate-200 dark:border-slate-800">
+      <CardContent className="p-6">
+        <div className="space-y-6">
+          <div>
+            <motion.h3
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-lg font-medium text-slate-900 dark:text-white mb-2"
+            >
+              Overall Sentiment
+            </motion.h3>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex items-center mb-4"
+            >
+              <span className={`text-2xl font-bold capitalize ${getSentimentColor(overallSentiment.overall)}`}>
+                {overallSentiment.overall}
+              </span>
+            </motion.div>
+            <div className="space-y-3">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium text-green-600 dark:text-green-400">Positive</span>
+                  <span className="text-sm font-medium text-green-600 dark:text-green-400">
+                    {Math.round(overallSentiment.positive * 100)}%
+                  </span>
+                </div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                >
+                  <Progress
+                    value={overallSentiment.positive * 100}
+                    className="h-2 bg-slate-200 dark:bg-slate-700"
+                    indicatorClassName="bg-green-500"
+                  />
+                </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium text-red-600 dark:text-red-400">Negative</span>
+                  <span className="text-sm font-medium text-red-600 dark:text-red-400">
+                    {Math.round(overallSentiment.negative * 100)}%
+                  </span>
+                </div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 0.7, delay: 0.3 }}
+                >
+                  <Progress
+                    value={overallSentiment.negative * 100}
+                    className="h-2 bg-slate-200 dark:bg-slate-700"
+                    indicatorClassName="bg-red-500"
+                  />
+                </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium text-amber-600 dark:text-amber-400">Neutral</span>
+                  <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
+                    {Math.round(overallSentiment.neutral * 100)}%
+                  </span>
+                </div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                >
+                  <Progress
+                    value={overallSentiment.neutral * 100}
+                    className="h-2 bg-slate-200 dark:bg-slate-700"
+                    indicatorClassName="bg-amber-500"
+                  />
+                </motion.div>
+              </motion.div>
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {result.aspects.map((aspect, index) => (
-          <Card key={index}>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                {aspect.aspect}
-                {getSentimentIcon(aspect.sentiment.overall)}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-green-600 dark:text-green-400">
-                  Positive: {Math.round(aspect.sentiment.positive * 100)}%
-                </span>
-                <span className="text-red-600 dark:text-red-400">
-                  Negative: {Math.round(aspect.sentiment.negative * 100)}%
-                </span>
-              </div>
-              <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500"
-                  style={{
-                    width: "100%",
-                    background: `linear-gradient(to right, 
-                      #22c55e 0%, 
-                      #22c55e ${aspect.sentiment.positive * 100}%, 
-                      #eab308 ${aspect.sentiment.positive * 100}%, 
-                      #eab308 ${(aspect.sentiment.positive + aspect.sentiment.neutral) * 100}%, 
-                      #ef4444 ${(aspect.sentiment.positive + aspect.sentiment.neutral) * 100}%, 
-                      #ef4444 100%)`,
-                  }}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
