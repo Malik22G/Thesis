@@ -94,7 +94,7 @@ export function Hero() {
             >
               <div className="w-full h-[400px] bg-white dark:bg-slate-900 p-4 relative">
                 <img
-                  src="/placeholder.svg?height=400&width=800"
+                  src="/background.jpg"
                   alt="Dashboard Preview"
                   className="w-full h-full object-cover rounded-lg"
                 />

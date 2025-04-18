@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -54,6 +54,13 @@ export function SentimentAnalyzer() {
   const [inputMethod, setInputMethod] = useState("text");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  // When switching to text input, enforce "summary" as the active tab.
+  useEffect(() => {
+    if (inputMethod === "text") {
+      setActiveTab("summary");
+    }
+  }, [inputMethod]);
+
   const getYouTubeVideoId = (url: string): string | null => {
     try {
       const urlObj = new URL(url);
@@ -71,7 +78,7 @@ export function SentimentAnalyzer() {
 
   const fetchYouTubeComments = async (videoId: string): Promise<string[]> => {
     const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-    const maxResults = 100;
+    const maxResults = 50;
 
     let comments: string[] = [];
     try {
@@ -85,9 +92,7 @@ export function SentimentAnalyzer() {
         });
       }
     } catch (error) {
-      console.error("Error fetching YouTube comments:", error);
     }
-    console.log("Fetched YouTube comments:", comments);
     return comments;
   };
 
@@ -113,8 +118,7 @@ export function SentimentAnalyzer() {
         originalTexts = comments;
         bodyPayload = { texts: comments };
       } else if (inputMethod === "csv") {
-        // For simplicity, using placeholder text when a CSV is uploaded.
-        originalTexts = ["CSV row 1 content", "CSV row 2 content"];
+        originalTexts = ["CSV row 1 content"];
         bodyPayload = { texts: originalTexts };
       }
 
@@ -142,7 +146,6 @@ export function SentimentAnalyzer() {
 
       setResult({ aspects: [], overallSentiment: overall, comments });
     } catch (error) {
-      console.error("Error analyzing:", error);
     } finally {
       setIsAnalyzing(false);
     }
@@ -167,18 +170,40 @@ export function SentimentAnalyzer() {
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <Card className="border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-950">
+          {/* Input Method Selection */}
           <Tabs value={inputMethod} onValueChange={setInputMethod}>
             <div className="border-b border-slate-200 dark:border-slate-800">
-              <TabsList className="w-full rounded-none h-auto p-0 bg-transparent">
-                <TabsTrigger value="text" className={`flex-1 rounded-none py-3 px-4 border-b-2 ${inputMethod === "text" ? "border-purple-600 text-purple-600 dark:text-purple-400" : "border-transparent"}`}>
+              <TabsList className="w-full rounded-none h-auto p-0 bg-transparent flex">
+                <TabsTrigger
+                  value="text"
+                  className={`flex-1 rounded-none py-3 px-4 border-b-2 ${
+                    inputMethod === "text"
+                      ? "border-purple-600 text-purple-600 dark:text-purple-400"
+                      : "border-transparent"
+                  }`}
+                >
                   <FileText className="mr-2 h-4 w-4" />
                   Text Input
                 </TabsTrigger>
-                <TabsTrigger value="csv" className={`flex-1 rounded-none py-3 px-4 border-b-2 ${inputMethod === "csv" ? "border-purple-600 text-purple-600 dark:text-purple-400" : "border-transparent"}`}>
+                <TabsTrigger
+                  value="csv"
+                  className={`flex-1 rounded-none py-3 px-4 border-b-2 ${
+                    inputMethod === "csv"
+                      ? "border-purple-600 text-purple-600 dark:text-purple-400"
+                      : "border-transparent"
+                  }`}
+                >
                   <Upload className="mr-2 h-4 w-4" />
                   CSV Upload
                 </TabsTrigger>
-                <TabsTrigger value="youtube" className={`flex-1 rounded-none py-3 px-4 border-b-2 ${inputMethod === "youtube" ? "border-purple-600 text-purple-600 dark:text-purple-400" : "border-transparent"}`}>
+                <TabsTrigger
+                  value="youtube"
+                  className={`flex-1 rounded-none py-3 px-4 border-b-2 ${
+                    inputMethod === "youtube"
+                      ? "border-purple-600 text-purple-600 dark:text-purple-400"
+                      : "border-transparent"
+                  }`}
+                >
                   <Youtube className="mr-2 h-4 w-4" />
                   YouTube
                 </TabsTrigger>
@@ -293,32 +318,33 @@ export function SentimentAnalyzer() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          {inputMethod === "text" ? (
-            <SentimentSummary result={result} inputMethod={inputMethod as "text"} />
-          ) : (
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="summary">Summary</TabsTrigger>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            {/* Results Tabs: Only show "Detailed Analysis" if input method is not text */}
+            <TabsList className={`w-full ${inputMethod === "text" ? "grid grid-cols-1" : "grid grid-cols-2"}`}>
+              <TabsTrigger value="summary">Summary</TabsTrigger>
+              {inputMethod !== "text" && (
                 <TabsTrigger value="details">Detailed Analysis</TabsTrigger>
-              </TabsList>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <TabsContent value="summary" className="mt-4">
-                    <SentimentSummary result={result} inputMethod={inputMethod as "csv" | "youtube"} />
-                  </TabsContent>
+              )}
+            </TabsList>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <TabsContent value="summary" className="mt-4">
+                  <SentimentSummary result={result} hidePercentages={inputMethod === "text"} />
+                </TabsContent>
+                {inputMethod !== "text" && (
                   <TabsContent value="details" className="mt-4">
                     <DetailedAnalysis result={result} />
                   </TabsContent>
-                </motion.div>
-              </AnimatePresence>
-            </Tabs>
-          )}
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </Tabs>
         </motion.div>
       )}
     </motion.div>

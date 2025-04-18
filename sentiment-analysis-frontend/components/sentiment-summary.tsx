@@ -24,9 +24,10 @@ type AnalysisResult = {
 
 interface SentimentSummaryProps {
   result: AnalysisResult | null
+  hidePercentages?: boolean
 }
 
-export function SentimentSummary({ result }: SentimentSummaryProps) {
+export function SentimentSummary({ result, hidePercentages = false }: SentimentSummaryProps) {
   // If no result yet, show placeholder
   if (!result) {
     return (
@@ -53,6 +54,35 @@ export function SentimentSummary({ result }: SentimentSummaryProps) {
       default:
         return "text-slate-600 dark:text-slate-400"
     }
+  }
+
+  if (hidePercentages) {
+    return (
+      <Card className="border-slate-200 dark:border-slate-800">
+        <CardContent className="p-6">
+          <div className="space-y-6">
+            <motion.h3
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-lg font-medium text-slate-900 dark:text-white mb-2"
+            >
+              Overall Sentiment
+            </motion.h3>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex items-center justify-center"
+            >
+              <span className={`text-2xl font-bold capitalize ${getSentimentColor(overallSentiment.overall)}`}>
+                {overallSentiment.overall}
+              </span>
+            </motion.div>
+          </div>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
@@ -155,4 +185,3 @@ export function SentimentSummary({ result }: SentimentSummaryProps) {
     </Card>
   )
 }
-
