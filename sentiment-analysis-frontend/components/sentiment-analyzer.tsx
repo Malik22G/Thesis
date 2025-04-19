@@ -12,19 +12,16 @@ import { Loader2, FileText, Upload, Youtube } from "lucide-react";
 import { SentimentSummary } from "@/components/sentiment-summary";
 import { DetailedAnalysis } from "./detailedAnalysis";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-type SentimentScore = {
-  positive: number;
-  negative: number;
-  neutral: number;
-  overall: "positive" | "negative" | "neutral";
-};
 
-type AspectSentiment = {
-  aspect: string;
-  sentiment: SentimentScore;
-  examples: string[];
-};
+
 
 type CommentAnalysis = {
   text: string;
@@ -53,8 +50,12 @@ export function SentimentAnalyzer() {
   const [activeTab, setActiveTab] = useState("summary");
   const [inputMethod, setInputMethod] = useState("text");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [commentCount, setCommentCount] = useState("50");
 
-  // When switching to text input, enforce "summary" as the active tab.
+  useEffect(() => {
+    setResult(null);
+  }, [inputMethod]);
+
   useEffect(() => {
     if (inputMethod === "text") {
       setActiveTab("summary");
@@ -76,9 +77,11 @@ export function SentimentAnalyzer() {
     }
   };
 
-  const fetchYouTubeComments = async (videoId: string): Promise<string[]> => {
+  const fetchYouTubeComments = async (
+    videoId: string,
+    maxResults: number
+  ): Promise<string[]> => {
     const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-    const maxResults = 50;
 
     let comments: string[] = [];
     try {
@@ -92,8 +95,36 @@ export function SentimentAnalyzer() {
         });
       }
     } catch (error) {
+      console.error("Error fetching YouTube comments:", error);
     }
     return comments;
+  };
+
+  const parseCSV = async (file: File): Promise<string[]> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (!event.target?.result) {
+          reject(new Error("Failed to read file"));
+          return;
+        }
+
+        const text = event.target.result as string;
+        const rows = text.split(/\r?\n/).filter(row => row.trim());
+        
+        const startIndex = rows[0].toLowerCase().includes("text") ? 1 : 0;
+        const texts = rows.slice(startIndex).map(row => {
+          if (row.includes(",")) {
+            return row.split(",")[0].trim().replace(/^"|"$/g, "");
+          }
+          return row.trim();
+        });
+        
+        resolve(texts);
+      };
+      reader.onerror = () => reject(new Error("Error reading file"));
+      reader.readAsText(file);
+    });
   };
 
   const analyzeText = async () => {
@@ -114,12 +145,14 @@ export function SentimentAnalyzer() {
       } else if (inputMethod === "youtube") {
         const videoId = getYouTubeVideoId(youtubeUrl);
         if (!videoId) throw new Error("Invalid video URL.");
-        const comments = await fetchYouTubeComments(videoId);
+        const maxComments = parseInt(commentCount);
+        const comments = await fetchYouTubeComments(videoId, maxComments);
         originalTexts = comments;
         bodyPayload = { texts: comments };
-      } else if (inputMethod === "csv") {
-        originalTexts = ["CSV row 1 content"];
-        bodyPayload = { texts: originalTexts };
+      } else if (inputMethod === "csv" && selectedFile) {
+        const texts = await parseCSV(selectedFile);
+        originalTexts = texts;
+        bodyPayload = { texts };
       }
 
       const response = await fetch("http://localhost:8000/predict", {
@@ -146,6 +179,7 @@ export function SentimentAnalyzer() {
 
       setResult({ aspects: [], overallSentiment: overall, comments });
     } catch (error) {
+      console.error("Analysis error:", error);
     } finally {
       setIsAnalyzing(false);
     }
@@ -259,6 +293,10 @@ export function SentimentAnalyzer() {
                         </p>
                       )}
                     </div>
+                    <p className="text-sm text-slate-500 mb-4">
+                      Your CSV file should contain a column named "text" with the content to analyze.
+                      If no header is provided, all rows will be analyzed.
+                    </p>
                   </motion.div>
                 )}
                 {inputMethod === "youtube" && (
@@ -279,6 +317,28 @@ export function SentimentAnalyzer() {
                       value={youtubeUrl}
                       onChange={(e) => setYoutubeUrl(e.target.value)}
                     />
+                    
+                    <div className="mb-4">
+                      <Label className="block text-sm font-medium mb-2">
+                        Number of comments to analyze
+                      </Label>
+                      <Select
+                        value={commentCount}
+                        onValueChange={setCommentCount}
+                      >
+                        <SelectTrigger className="w-full sm:w-40">
+                          <SelectValue placeholder="50" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="10">10 comments</SelectItem>
+                          <SelectItem value="25">25 comments</SelectItem>
+                          <SelectItem value="50">50 comments</SelectItem>
+                          <SelectItem value="100">100 comments</SelectItem>
+                          <SelectItem value="200">200 comments</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
                     <p className="text-sm text-slate-500 mb-4">
                       We'll analyze the sentiment of comments on this video.
                     </p>
@@ -335,7 +395,11 @@ export function SentimentAnalyzer() {
                 transition={{ duration: 0.3 }}
               >
                 <TabsContent value="summary" className="mt-4">
-                  <SentimentSummary result={result} hidePercentages={inputMethod === "text"} />
+                  <SentimentSummary 
+                    result={result} 
+                    hidePercentages={inputMethod === "text"} 
+                    hideOverallSentiment={inputMethod !== "text"} 
+                  />
                 </TabsContent>
                 {inputMethod !== "text" && (
                   <TabsContent value="details" className="mt-4">

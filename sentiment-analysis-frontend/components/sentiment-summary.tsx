@@ -25,9 +25,14 @@ type AnalysisResult = {
 interface SentimentSummaryProps {
   result: AnalysisResult | null
   hidePercentages?: boolean
+  hideOverallSentiment?: boolean
 }
 
-export function SentimentSummary({ result, hidePercentages = false }: SentimentSummaryProps) {
+export function SentimentSummary({ 
+  result, 
+  hidePercentages = false,
+  hideOverallSentiment = false
+}: SentimentSummaryProps) {
   // If no result yet, show placeholder
   if (!result) {
     return (
@@ -56,58 +61,77 @@ export function SentimentSummary({ result, hidePercentages = false }: SentimentS
     }
   }
 
+  // Only show sentiment label without percentages
   if (hidePercentages) {
     return (
       <Card className="border-slate-200 dark:border-slate-800">
         <CardContent className="p-6">
           <div className="space-y-6">
-            <motion.h3
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="text-lg font-medium text-slate-900 dark:text-white mb-2"
-            >
-              Overall Sentiment
-            </motion.h3>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex items-center justify-center"
-            >
-              <span className={`text-2xl font-bold capitalize ${getSentimentColor(overallSentiment.overall)}`}>
-                {overallSentiment.overall}
-              </span>
-            </motion.div>
+            {!hideOverallSentiment && (
+              <>
+                <motion.h3
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-lg font-medium text-slate-900 dark:text-white mb-2"
+                >
+                  Overall Sentiment
+                </motion.h3>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="flex items-center justify-center"
+                >
+                  <span className={`text-2xl font-bold capitalize ${getSentimentColor(overallSentiment.overall)}`}>
+                    {overallSentiment.overall}
+                  </span>
+                </motion.div>
+              </>
+            )}
+            
+            {hideOverallSentiment && (
+              <div className="text-center py-4">
+                <p className="text-slate-500 dark:text-slate-400">
+                  Switch to Detailed Analysis tab to see comment-level sentiment
+                </p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
     )
   }
 
+  // Show full breakdown with percentages
   return (
     <Card className="border-slate-200 dark:border-slate-800">
       <CardContent className="p-6">
         <div className="space-y-6">
           <div>
-            <motion.h3
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="text-lg font-medium text-slate-900 dark:text-white mb-2"
-            >
-              Overall Sentiment
-            </motion.h3>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex items-center mb-4"
-            >
-              <span className={`text-2xl font-bold capitalize ${getSentimentColor(overallSentiment.overall)}`}>
-                {overallSentiment.overall}
-              </span>
-            </motion.div>
+            {!hideOverallSentiment && (
+              <>
+                <motion.h3
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-lg font-medium text-slate-900 dark:text-white mb-2"
+                >
+                  Overall Sentiment
+                </motion.h3>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="flex items-center mb-4"
+                >
+                  <span className={`text-2xl font-bold capitalize ${getSentimentColor(overallSentiment.overall)}`}>
+                    {overallSentiment.overall}
+                  </span>
+                </motion.div>
+              </>
+            )}
+            
             <div className="space-y-3">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -179,6 +203,19 @@ export function SentimentSummary({ result, hidePercentages = false }: SentimentS
                 </motion.div>
               </motion.div>
             </div>
+            
+            {hideOverallSentiment && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-center"
+              >
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Switch to Detailed Analysis tab to see comment-level sentiment
+                </p>
+              </motion.div>
+            )}
           </div>
         </div>
       </CardContent>
