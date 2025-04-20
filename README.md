@@ -34,7 +34,7 @@ Advanced sentiment analysis powered by AI. This project enables users to analyze
 git clone https://github.com/Malik22G/Thesis.git
 ```
 ```bash
-cd sentiment-analysis-frontend
+cd Thesis\sentiment-analysis-frontend\
 ```
 
 ## Usage
