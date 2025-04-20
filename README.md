@@ -1,6 +1,6 @@
-# Sentiment Analysis Dashboard (SentiMeter)
+# Sentiment Analysis SentiMeter
 
-Advanced aspect-based sentiment analysis powered by AI. This project enables users to analyze sentiments around specific features of their products or services through multiple input methods, offering real-time insights and interactive visual reports.
+Advanced sentiment analysis powered by AI. This project enables users to analyze sentiments through multiple input methods, offering real-time insights and interactive visual reports.
 
 
 ## Features
@@ -8,7 +8,6 @@ Advanced aspect-based sentiment analysis powered by AI. This project enables use
 - **Text Analysis**: Analyze sentiment from direct text input.
 - **CSV Upload**: Batch process large volumes of feedback from CSV files.
 - **YouTube Comments**: Extract and analyze sentiment of comments from YouTube videos.
-- **Aspect-Based Analysis**: Break down sentiment by specific aspects of your content.
 - **Visual Reports**: Interactive charts and graphs for clear sentiment visualization.
 - **Real-Time Analysis**: Get results in seconds for rapid decision-making.
 
