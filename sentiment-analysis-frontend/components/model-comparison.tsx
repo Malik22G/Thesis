@@ -22,54 +22,50 @@ import {
   Radar,
 } from "recharts"
 
-// Enhanced data for model performance with more detailed metrics
+// Overall performance on test set
 const performanceData = {
   accuracy: [
-    { name: "BERT", value: 0.87, color: "#8b5cf6" },
-    { name: "RoBERTa", value: 0.89, color: "#ec4899" },
-    { name: "DistilBERT", value: 0.85, color: "#f59e0b" },
-    { name: "DeBERTa", value: 0.91, color: "#3b82f6" },
+    { name: "BERT",      value: 0.8300, color: "#8b5cf6" },
+    { name: "RoBERTa",   value: 0.8408, color: "#ec4899" },
+    { name: "DistilBERT",value: 0.8235, color: "#f59e0b" },
+    { name: "DeBERTa",   value: 0.8418, color: "#3b82f6" },
   ],
   precision: [
-    { name: "BERT", value: 0.86, color: "#8b5cf6" },
-    { name: "RoBERTa", value: 0.88, color: "#ec4899" },
-    { name: "DistilBERT", value: 0.83, color: "#f59e0b" },
-    { name: "DeBERTa", value: 0.9, color: "#3b82f6" },
+    { name: "BERT",      value: 0.8244, color: "#8b5cf6" },
+    { name: "RoBERTa",   value: 0.8353, color: "#ec4899" },
+    { name: "DistilBERT",value: 0.8177, color: "#f59e0b" },
+    { name: "DeBERTa",   value: 0.8370, color: "#3b82f6" },
   ],
   recall: [
-    { name: "BERT", value: 0.85, color: "#8b5cf6" },
-    { name: "RoBERTa", value: 0.87, color: "#ec4899" },
-    { name: "DistilBERT", value: 0.84, color: "#f59e0b" },
-    { name: "DeBERTa", value: 0.89, color: "#3b82f6" },
+    { name: "BERT",      value: 0.8300, color: "#8b5cf6" },
+    { name: "RoBERTa",   value: 0.8408, color: "#ec4899" },
+    { name: "DistilBERT",value: 0.8235, color: "#f59e0b" },
+    { name: "DeBERTa",   value: 0.8418, color: "#3b82f6" },
   ],
   f1: [
-    { name: "BERT", value: 0.855, color: "#8b5cf6" },
-    { name: "RoBERTa", value: 0.875, color: "#ec4899" },
-    { name: "DistilBERT", value: 0.835, color: "#f59e0b" },
-    { name: "DeBERTa", value: 0.895, color: "#3b82f6" },
+    { name: "BERT",      value: 0.8265, color: "#8b5cf6" },
+    { name: "RoBERTa",   value: 0.8373, color: "#ec4899" },
+    { name: "DistilBERT",value: 0.8195, color: "#f59e0b" },
+    { name: "DeBERTa",   value: 0.8386, color: "#3b82f6" },
   ],
 }
 
-// Time series data for model performance over training epochs
 const timeSeriesData = [
-  { epoch: 1, BERT: 0.7, RoBERTa: 0.72, DistilBERT: 0.68, DeBERTa: 0.73 },
+  { epoch: 1, BERT: 0.70, RoBERTa: 0.72, DistilBERT: 0.68, DeBERTa: 0.73 },
   { epoch: 2, BERT: 0.75, RoBERTa: 0.78, DistilBERT: 0.73, DeBERTa: 0.79 },
   { epoch: 3, BERT: 0.79, RoBERTa: 0.82, DistilBERT: 0.77, DeBERTa: 0.83 },
-  { epoch: 4, BERT: 0.82, RoBERTa: 0.85, DistilBERT: 0.8, DeBERTa: 0.86 },
-  { epoch: 5, BERT: 0.84, RoBERTa: 0.87, DistilBERT: 0.82, DeBERTa: 0.88 },
-  { epoch: 6, BERT: 0.86, RoBERTa: 0.88, DistilBERT: 0.83, DeBERTa: 0.9 },
-  { epoch: 7, BERT: 0.87, RoBERTa: 0.89, DistilBERT: 0.85, DeBERTa: 0.91 },
 ]
 
-// Radar chart data for comparing models across multiple dimensions
 const radarData = [
-  { subject: "Accuracy", BERT: 0.87, RoBERTa: 0.89, DistilBERT: 0.85, DeBERTa: 0.91, fullMark: 1 },
-  { subject: "Precision", BERT: 0.86, RoBERTa: 0.88, DistilBERT: 0.83, DeBERTa: 0.9, fullMark: 1 },
-  { subject: "Recall", BERT: 0.85, RoBERTa: 0.87, DistilBERT: 0.84, DeBERTa: 0.89, fullMark: 1 },
-  { subject: "F1 Score", BERT: 0.855, RoBERTa: 0.875, DistilBERT: 0.835, DeBERTa: 0.895, fullMark: 1 },
-  { subject: "Speed", BERT: 0.7, RoBERTa: 0.65, DistilBERT: 0.9, DeBERTa: 0.6, fullMark: 1 },
-  { subject: "Memory", BERT: 0.75, RoBERTa: 0.7, DistilBERT: 0.95, DeBERTa: 0.65, fullMark: 1 },
+  { subject: "Accuracy",  BERT: 0.8300, RoBERTa: 0.8408, DistilBERT: 0.8235, DeBERTa: 0.8418, fullMark: 1 },
+  { subject: "Precision", BERT: 0.8244, RoBERTa: 0.8353, DistilBERT: 0.8177, DeBERTa: 0.8370, fullMark: 1 },
+  { subject: "Recall",    BERT: 0.8300, RoBERTa: 0.8408, DistilBERT: 0.8235, DeBERTa: 0.8418, fullMark: 1 },
+  { subject: "F1 Score",  BERT: 0.8265, RoBERTa: 0.8373, DistilBERT: 0.8195, DeBERTa: 0.8386, fullMark: 1 },
+  // If you have speed/memory benchmarks, insert them here:
+  { subject: "Speed",     BERT: 0.70,   RoBERTa: 0.65,   DistilBERT: 0.90,   DeBERTa: 0.60,   fullMark: 1 },
+  { subject: "Memory",    BERT: 0.75,   RoBERTa: 0.70,   DistilBERT: 0.95,   DeBERTa: 0.65,   fullMark: 1 },
 ]
+
 
 // Chart type options
 type ChartType = "bar" | "line" | "radar"

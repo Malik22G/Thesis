@@ -1,4 +1,3 @@
-# test_csv_upload.py
 
 import io
 import csv
@@ -9,7 +8,7 @@ def parse_csv(file_like_object):
     Returns a list of text strings.
     """
     reader = csv.reader(file_like_object)
-    return [row[0] for row in reader if row]  # skip empty rows
+    return [row[0] for row in reader if row]  
 
 def test_parse_csv():
     csv_content = "This is comment one\nThis is comment two\nThis is comment three"
@@ -21,7 +20,6 @@ def test_parse_csv():
     assert texts[2] == "This is comment three"
 
 def test_large_csv_batch():
-    # Simulate a large CSV by repeating a comment many times.
     comment = "This is a test comment."
     num_rows = 1000
     csv_content = "\n".join([comment for _ in range(num_rows)])

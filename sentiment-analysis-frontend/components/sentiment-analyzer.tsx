@@ -97,6 +97,7 @@ export function SentimentAnalyzer() {
     } catch (error) {
       console.error("Error fetching YouTube comments:", error);
     }
+    console.log(comments)
     return comments;
   };
 

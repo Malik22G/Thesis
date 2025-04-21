@@ -6,10 +6,9 @@ from model.predictor import predict_sentiment
 
 app = FastAPI()
 
-# Optional: Allow frontend (like localhost:3000) to access this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with ["http://localhost:3000"] in production
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
