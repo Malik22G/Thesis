@@ -48,7 +48,12 @@ export function Navbar() {
               Pricing
             </Link>
             <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Link
+              href="/pricing"
+             
+            >              
               Get Started
+            </Link>
             </Button>
           </nav>
 
@@ -80,14 +85,14 @@ export function Navbar() {
               Analyze
             </Link>
             <Link
-              href="#"
+              href="/documentation"
               className="block py-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               onClick={() => setIsMenuOpen(false)}
             >
               Documentation
             </Link>
             <Link
-              href="#"
+              href="/pricing"
               className="block py-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               onClick={() => setIsMenuOpen(false)}
             >

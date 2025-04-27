@@ -335,7 +335,6 @@ export function SentimentAnalyzer() {
                           <SelectItem value="25">25 comments</SelectItem>
                           <SelectItem value="50">50 comments</SelectItem>
                           <SelectItem value="100">100 comments</SelectItem>
-                          <SelectItem value="200">200 comments</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

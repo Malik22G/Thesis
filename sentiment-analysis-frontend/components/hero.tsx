@@ -53,7 +53,7 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-8 max-w-3xl mx-auto"
           >
-            Our advanced AI-powered sentiment analysis breaks down feedback by specific aspects, giving you actionable
+            Our advanced AI-powered sentiment analysis breaks down feedback by giving you actionable
             insights to improve your product or service.
           </motion.p>
 

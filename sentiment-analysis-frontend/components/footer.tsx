@@ -86,14 +86,7 @@ export function Footer() {
                   About
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/careers"
-                  className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                >
-                  Careers
-                </Link>
-              </li>
+      
     
             </ul>
           </div>

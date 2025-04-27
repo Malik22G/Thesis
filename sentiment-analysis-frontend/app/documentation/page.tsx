@@ -103,29 +103,19 @@ export default function DocumentationPage() {
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">2. Aspect Extraction</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">
-                      Our models identify specific aspects or features mentioned in the text using named entity
-                      recognition and dependency parsing techniques. This allows us to categorize sentiment by specific
-                      product or service aspects.
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
                     <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
-                      3. Sentiment Classification
+                      2. Sentiment Classification
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-4">
-                      For each identified aspect, our transformer-based models analyze the surrounding context to
-                      determine sentiment polarity (positive, negative, or neutral) and intensity. This provides nuanced
-                      understanding beyond simple positive/negative classification.
+                      For each text, our transformer-based models analyze the  context to
+                      determine sentiment polarity (positive, negative, or neutral) and intensity.
                     </p>
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">4. Result Aggregation</h3>
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">3. Result Aggregation</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-4">
-                      Results are aggregated to provide both aspect-specific and overall sentiment scores. Our
+                      Results are aggregated to provide the overall sentiment scores. Our
                       visualization tools make these insights accessible and actionable for business decision-making.
                     </p>
                   </div>

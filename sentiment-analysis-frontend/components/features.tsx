@@ -70,14 +70,7 @@ export function Features() {
                 "Enter a YouTube video URL to analyze the sentiment of comments, helping content creators understand audience reception.",
               gradient: "from-red-500 to-orange-500",
             },
-            {
-              icon: <BarChart2 className="h-6 w-6 text-white" />,
-              title: "Aspect-Based Analysis",
-              description: "Break down sentiment by specific aspects of your product or service.",
-              content:
-                "Our AI identifies specific aspects mentioned in feedback and analyzes sentiment for each, giving you granular insights.",
-              gradient: "from-amber-500 to-yellow-500",
-            },
+  
             {
               icon: <PieChart className="h-6 w-6 text-white" />,
               title: "Visual Reports",
