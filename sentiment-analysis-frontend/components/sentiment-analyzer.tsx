@@ -156,7 +156,7 @@ export function SentimentAnalyzer() {
         bodyPayload = { texts };
       }
 
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyPayload),
