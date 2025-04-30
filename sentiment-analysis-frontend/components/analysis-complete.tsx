@@ -28,8 +28,8 @@ export function AnalysisComplete() {
           transition={{ delay: 0.4, duration: 0.3 }}
           className="absolute inset-0 bg-green-100 dark:bg-green-900/30 rounded-full scale-[1.6] z-0"
         />
-        <CheckCircle className="h-16 w-16 text-green-500 dark:text-green-400 relative z-10" />
-      </motion.div>
+<CheckCircle className="h-16 w-16 min-w-16 min-h-16 flex-shrink-0 text-green-500 dark:text-green-400 relative z-10" />
+</motion.div>
 
       <motion.h3
         initial={{ opacity: 0, y: 10 }}
