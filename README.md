@@ -87,6 +87,7 @@ Set up environment variables in `.env`:
 
 ```env
 NEXT_PUBLIC_YOUTUBE_API_KEY=your_youtube_api_key
+NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
 ```
 
 Run the development server:
