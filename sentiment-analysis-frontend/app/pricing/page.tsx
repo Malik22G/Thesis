@@ -17,7 +17,15 @@ export default function PricingPage() {
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                   Simple, Transparent Pricing
                 </h1>
-                <p className="text-xl text-purple-100 mb-8">Choose the plan that's right for your business needs</p>
+                <p className="text-xl text-purple-100 mb-8">
+                  Choose the plan that's right for your business needs
+                </p>
+                <a
+                  href="mailto:malik.basit3690@gmail.com"
+                  className="inline-block px-6 py-3 bg-white text-purple-700 font-semibold rounded-md shadow hover:bg-purple-100 transition"
+                >
+                  Get In Touch
+                </a>
               </div>
             </div>
           </div>
@@ -28,20 +36,22 @@ export default function PricingPage() {
               <PricingTable />
 
               <div className="mt-16 max-w-3xl mx-auto text-center">
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Enterprise Solutions</h3>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+                  Enterprise Solutions
+                </h3>
                 <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
                   Need a custom solution for your organization? Our enterprise plans offer dedicated support, custom
                   integrations, and tailored features.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <a
-                    href="#"
+                    href="mailto:malik.basit3690@gmail.com"
                     className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 transition-colors"
                   >
                     Contact Sales
                   </a>
                   <a
-                    href="#"
+                    href="mailto:malik.basit3690@gmail.com"
                     className="inline-flex items-center justify-center px-6 py-3 border border-slate-300 dark:border-slate-700 text-base font-medium rounded-md text-slate-900 dark:text-white bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                   >
                     Book a Demo
@@ -60,44 +70,35 @@ export default function PricingPage() {
                 </h2>
 
                 <div className="space-y-8">
-                  <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
-                      Can I change plans later?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your
-                      next billing cycle.
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
-                      What happens if I exceed my monthly analysis quota?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      If you exceed your monthly quota, you can purchase additional analysis credits or upgrade to a
-                      higher tier plan. We'll notify you when you're approaching your limit.
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
-                      Do you offer discounts for non-profits or educational institutions?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      Yes, we offer special pricing for non-profits, educational institutions, and startups. Contact our
-                      sales team for more information.
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
-                      Is there a free trial available?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400">
-                      Yes, all paid plans come with a 14-day free trial. No credit card required to start your trial.
-                    </p>
-                  </div>
+                  {[
+                    {
+                      q: "Can I change plans later?",
+                      a: "Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.",
+                    },
+                    {
+                      q: "What happens if I exceed my monthly analysis quota?",
+                      a: "If you exceed your monthly quota, you can purchase additional analysis credits or upgrade to a higher tier plan. We'll notify you when you're approaching your limit.",
+                    },
+                    {
+                      q: "Do you offer discounts for non-profits or educational institutions?",
+                      a: "Yes, we offer special pricing for non-profits, educational institutions, and startups. Contact our sales team for more information.",
+                    },
+                    {
+                      q: "Is there a free trial available?",
+                      a: "Yes, all paid plans come with a 14-day free trial. No credit card required to start your trial.",
+                    },
+                  ].map(({ q, a }, i) => (
+                    <div key={i} className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
+                      <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">{q}</h3>
+                      <p className="text-slate-600 dark:text-slate-400">{a}</p>
+                      <a
+                        href="mailto:malik.basit3690@gmail.com"
+                        className="inline-block mt-4 text-purple-600 dark:text-purple-400 hover:underline font-medium"
+                      >
+                        Ask a question
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -108,4 +109,3 @@ export default function PricingPage() {
     </div>
   )
 }
-

@@ -44,7 +44,11 @@ export default function AboutPage() {
                     </p>
                   </div>
                   <div className="md:w-1/2 rounded-xl overflow-hidden shadow-xl">
-                    <img src="/placeholder.svg?height=400&width=600" alt="SentiScan team" className="w-full h-auto" />
+                    <img
+                      src="https://plus.unsplash.com/premium_photo-1661761895484-d249cf3eacf8?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      alt="SentiScan team"
+                      className="w-full h-auto object-cover"
+                    />
                   </div>
                 </div>
               </div>
@@ -62,6 +66,8 @@ export default function AboutPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {/* Repeatable cards */}
+                {/* Card 1 */}
                 <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-md">
                   <div className="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900 flex items-center justify-center mb-4">
                     <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
@@ -123,40 +129,52 @@ export default function AboutPage() {
                     name: "Alex Chen",
                     role: "CEO & Co-founder",
                     bio: "Former AI researcher at Stanford with 10+ years experience in NLP and machine learning.",
+                    image:
+                      "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   },
                   {
                     name: "Sophia Rodriguez",
                     role: "CTO & Co-founder",
                     bio: "Previously led ML engineering teams at Google, specializing in sentiment analysis and language models.",
+                    image:
+                      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=600&q=80",
                   },
                   {
                     name: "Marcus Johnson",
                     role: "Head of Product",
                     bio: "Product leader with experience at top SaaS companies, focused on building intuitive data products.",
+                    image:
+                      "https://images.unsplash.com/photo-1528892952291-009c663ce843?q=80&w=1244&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   },
                   {
-                    name: "Priya Patel",
+                    name: "Priyam Patel",
                     role: "Lead Data Scientist",
                     bio: "PhD in Computational Linguistics with expertise in multilingual sentiment analysis.",
+                    image:
+                      "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=600&q=80",
                   },
                   {
                     name: "David Kim",
                     role: "Head of Customer Success",
                     bio: "Passionate about helping customers extract maximum value from data and AI solutions.",
+                    image:
+                      "https://images.unsplash.com/photo-1625504615927-c14f4f309b63?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   },
                   {
                     name: "Emma Wilson",
                     role: "VP of Engineering",
                     bio: "Experienced engineering leader focused on building scalable, reliable AI infrastructure.",
+                    image:
+                      "https://images.unsplash.com/photo-1573497161161-c3e73707e25c?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   },
                 ].map((member, index) => (
                   <div
                     key={index}
                     className="bg-white dark:bg-slate-900 rounded-xl overflow-hidden shadow-md transition-transform hover:scale-105"
                   >
-                    <div className="h-48 bg-gradient-to-r from-purple-400 to-pink-400">
+                    <div className="h-48">
                       <img
-                        src={`/placeholder.svg?height=200&width=300&text=${member.name}`}
+                        src={member.image}
                         alt={member.name}
                         className="w-full h-full object-cover"
                       />
@@ -177,4 +195,3 @@ export default function AboutPage() {
     </div>
   )
 }
-

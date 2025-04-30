@@ -3,10 +3,7 @@ import io
 import csv
 
 def parse_csv(file_like_object):
-    """
-    Simulate parsing a CSV file where each row's first column is a text input.
-    Returns a list of text strings.
-    """
+
     reader = csv.reader(file_like_object)
     return [row[0] for row in reader if row]  
 

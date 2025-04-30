@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Check, X } from "lucide-react"
 
@@ -13,10 +12,7 @@ export function PricingTable() {
     {
       name: "Free",
       description: "For individuals and small projects",
-      price: {
-        monthly: 0,
-        annually: 0,
-      },
+      price: { monthly: 0, annually: 0 },
       features: [
         { name: "1,000 analyses per month", included: true },
         { name: "Basic sentiment analysis", included: true },
@@ -33,10 +29,7 @@ export function PricingTable() {
     {
       name: "Pro",
       description: "For professionals and growing businesses",
-      price: {
-        monthly: 49,
-        annually: 39,
-      },
+      price: { monthly: 49, annually: 39 },
       features: [
         { name: "25,000 analyses per month", included: true },
         { name: "Advanced sentiment analysis", included: true },
@@ -53,10 +46,7 @@ export function PricingTable() {
     {
       name: "Enterprise",
       description: "For large organizations with advanced needs",
-      price: {
-        monthly: 199,
-        annually: 159,
-      },
+      price: { monthly: 199, annually: 159 },
       features: [
         { name: "Unlimited analyses", included: true },
         { name: "State-of-the-art models", included: true },
@@ -127,18 +117,14 @@ export function PricingTable() {
               </div>
 
               <ul className="space-y-3 text-left">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="flex items-start">
                     {feature.included ? (
                       <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
                     ) : (
                       <X className="h-5 w-5 text-slate-300 dark:text-slate-600 mr-2 flex-shrink-0" />
                     )}
-                    <span
-                      className={
-                        feature.included ? "text-slate-700 dark:text-slate-300" : "text-slate-400 dark:text-slate-600"
-                      }
-                    >
+                    <span className={feature.included ? "text-slate-700 dark:text-slate-300" : "text-slate-400 dark:text-slate-600"}>
                       {feature.name}
                     </span>
                   </li>
@@ -146,12 +132,16 @@ export function PricingTable() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button
-                className={`w-full ${plan.highlight ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" : ""}`}
-                variant={plan.highlight ? "default" : "outline"}
+              <a
+                href="mailto:malik.basit3690@gmail.com?subject=Plan%20Inquiry:%20${encodeURIComponent(plan.name)}"
+                className={`w-full text-center inline-block px-4 py-2 rounded-md font-medium transition ${
+                  plan.highlight
+                    ? "text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                    : "border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-white bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700"
+                }`}
               >
                 {plan.cta}
-              </Button>
+              </a>
             </CardFooter>
           </Card>
         ))}
@@ -159,4 +149,3 @@ export function PricingTable() {
     </div>
   )
 }
-

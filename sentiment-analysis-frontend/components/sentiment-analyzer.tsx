@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,9 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-
-
+import { TextAnalysisLoading } from "@/components/text-analysis-loading";
+import { AnalysisLoading } from "@/components/analysis-loading";
+import { AnalysisComplete } from "@/components/analysis-complete";
 
 type CommentAnalysis = {
   text: string;
@@ -51,9 +51,16 @@ export function SentimentAnalyzer() {
   const [inputMethod, setInputMethod] = useState("text");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [commentCount, setCommentCount] = useState("50");
+  const [showCompletion, setShowCompletion] = useState(false);
+  const [analysisState, setAnalysisState] = useState<"idle" | "analyzing" | "success" | "error" | "complete">("idle");
+  const [showResults, setShowResults] = useState(false);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setResult(null);
+    setAnalysisState("idle");
+    setShowCompletion(false);
+    setShowResults(false);
   }, [inputMethod]);
 
   useEffect(() => {
@@ -61,6 +68,30 @@ export function SentimentAnalyzer() {
       setActiveTab("summary");
     }
   }, [inputMethod]);
+
+  useEffect(() => {
+    if (analysisState === "success" && result) {
+      if (inputMethod === "text") {
+        // For text input, immediately show results without any animation
+        setShowResults(true);
+      } else {
+        // For other input methods, show completion message first
+        const completeTimer = setTimeout(() => {
+          setShowCompletion(true);
+          
+          // Then hide it and show results after a delay
+          const resultsTimer = setTimeout(() => {
+            setShowCompletion(false);
+            setShowResults(true);
+          }, 2000); // How long the completion message shows
+          
+          return () => clearTimeout(resultsTimer);
+        }, 1500); // Wait a bit after analysis is done before showing completion
+        
+        return () => clearTimeout(completeTimer);
+      }
+    }
+  }, [analysisState, result, inputMethod]);
 
   const getYouTubeVideoId = (url: string): string | null => {
     try {
@@ -97,7 +128,6 @@ export function SentimentAnalyzer() {
     } catch (error) {
       console.error("Error fetching YouTube comments:", error);
     }
-    console.log(comments)
     return comments;
   };
 
@@ -135,6 +165,9 @@ export function SentimentAnalyzer() {
 
     setIsAnalyzing(true);
     setResult(null);
+    setAnalysisState("analyzing");
+    setShowCompletion(false);
+    setShowResults(false);
 
     try {
       let bodyPayload: any = {};
@@ -179,8 +212,10 @@ export function SentimentAnalyzer() {
       };
 
       setResult({ aspects: [], overallSentiment: overall, comments });
+      setAnalysisState("success");
     } catch (error) {
       console.error("Analysis error:", error);
+      setAnalysisState("error");
     } finally {
       setIsAnalyzing(false);
     }
@@ -259,6 +294,7 @@ export function SentimentAnalyzer() {
                       Enter text to analyze
                     </Label>
                     <Textarea
+                      ref={textAreaRef}
                       placeholder="Enter your text here..."
                       className="min-h-[150px] mb-4"
                       value={text}
@@ -371,12 +407,55 @@ export function SentimentAnalyzer() {
           </Tabs>
         </Card>
       </motion.div>
+      
+      {/* Loading Animations and Processing States - Only for non-text inputs */}
+      <AnimatePresence>
+        {analysisState === "analyzing" && inputMethod !== "text" && (
+          <motion.div
+            key="analyzing"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="mt-6 border rounded-lg border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900"
+          >
+            <AnalysisLoading type={inputMethod as "youtube" | "csv"} />
+          </motion.div>
+        )}
 
-      {result && (
-        <motion.div
+        {showCompletion && inputMethod !== "text" && (
+          <motion.div
+            key="completion"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="mt-6 border rounded-lg border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900"
+          >
+            <AnalysisComplete />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Analysis Error State */}
+      {analysisState === "error" && (
+        <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.3 }}
+          className="mt-6 p-4 border rounded-lg border-red-200 bg-red-50 text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400"
+        >
+          Error during analysis. Please try again or check your input.
+        </motion.div>
+      )}
+
+      {/* Results Display */}
+      {result && showResults && (
+        <motion.div
+          key="results"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Results Tabs: Only show "Detailed Analysis" if input method is not text */}

@@ -27,5 +27,5 @@ def predict(request: TextInput):
     else:
         return {"error": "No input text provided."}
 
-    print(f"📥 Received {len(texts)} text(s) for prediction.")
+    print(f"Received {len(texts)} text(s) for prediction.")
     return predict_sentiment(texts)
