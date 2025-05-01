@@ -1,3 +1,6 @@
+import os
+import gdown
+import zipfile
 import torch
 import torch.nn.functional as F
 import numpy as np
@@ -6,20 +9,37 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+file_id = "1ipquwv_ZnbD97caMnynNWlDIVMrmQRmp"
+zip_path = "model.zip"
+model_dir = "./deberta_finetuned"
+
+def download_and_extract_model():
+    if not os.path.exists(model_dir):
+        print("Downloading model from Google Drive...")
+        gdown.download(id=file_id, output=zip_path, quiet=False)
+
+        print("Extracting model...")
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall("./")
+
+        os.remove(zip_path)
+        print("Model downloaded and extracted.")
+    else:
+        print("Model already exists. Skipping download.")
+
+download_and_extract_model()
+
 # Load tokenizer and model
-model_path = "./deberta_finetuned"
-tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
-model = AutoModelForSequenceClassification.from_pretrained(model_path, local_files_only=True).to(device)
+tokenizer = AutoTokenizer.from_pretrained(model_dir, local_files_only=True)
+model = AutoModelForSequenceClassification.from_pretrained(model_dir, local_files_only=True).to(device)
 model.eval()
 
 # Label mapping
 id2label = {0: "positive", 1: "negative", 2: "neutral"}
 
-# Clean input text
 def clean_text(t: str) -> str:
     return t.strip()[:512]
 
-# Convert numpy values to native Python types
 def convert_numpy(obj):
     if isinstance(obj, np.generic):
         return obj.item()
@@ -29,7 +49,6 @@ def convert_numpy(obj):
         return [convert_numpy(i) for i in obj]
     return obj
 
-# Predict sentiment
 def predict_sentiment(texts: list[str], batch_size: int = 32):
     print("Running predict_sentiment on:", len(texts), "texts")
 
