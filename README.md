@@ -1,8 +1,7 @@
 # Sentiment Analysis SentiMeter
 
 Advanced sentiment analysis powered by AI. This project enables users to analyze sentiments through multiple input methods, offering real-time insights and interactive visual reports.
-## Live Demo
-https://sentimeter.space/
+
 
 ## Features
 
